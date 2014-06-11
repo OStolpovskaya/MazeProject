@@ -83,7 +83,7 @@ public class Labyrinth extends Model {
 
         for (int row = 0; row < N; row++) {
             stringBuilder.append("<div class=\"row\">");
-            for (int col = 1; col < N + 1; col++) {
+            for (int col = 0; col < N; col++) {
                 LabyrinthCell labyrinthCell = LabyrinthCell.findByLabyrinthAndCoordinates(this, row, col);
                 if (labyrinthCell == null) {
                     Logger.error("Cell with labyrinth=" + this.id + ", row=" + row + ", col=" + col + " not found");
@@ -94,11 +94,9 @@ public class Labyrinth extends Model {
                 if (labyrinthCell.visited == false) {
                     stringBuilder.append("background-color:#CCCCCC;");
                 } else {
-                    /*
-                    if (labyrinthCell.id.equals(currentCell.id)) {
+                    if (labyrinthCell.equals(currentCell)) {
                         stringBuilder.append("background-color:#57DE91;");
                     }
-                    */
                     if (labyrinthCell.northWall) {
                         stringBuilder.append("border-top-color:black;");
                     }

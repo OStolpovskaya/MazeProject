@@ -47,7 +47,7 @@ public class Maze {
                 LabyrinthCell labyrinthCell = new LabyrinthCell();
                 labyrinthCell.labyrinth = labyrinth;
                 labyrinthCell.row = N - y;
-                labyrinthCell.col = x;
+                labyrinthCell.col = x - 1;
                 labyrinthCell.northWall = north[x][y];
                 labyrinthCell.eastWall = east[x][y];
                 labyrinthCell.southWall = south[x][y];
@@ -55,7 +55,7 @@ public class Maze {
                 labyrinth.cells.add(labyrinthCell);
             }
         }
-
+        labyrinth.save();
     }
 
     // a test client
