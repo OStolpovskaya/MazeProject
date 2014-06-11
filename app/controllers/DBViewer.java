@@ -1,8 +1,6 @@
 package controllers;
 
-import models.Labyrinth;
-import models.LabyrinthCell;
-import models.User;
+import models.*;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.dbviwer;
@@ -20,8 +18,11 @@ public class DBViewer extends Controller {
         List<User> users = User.find.all();
         List<Labyrinth> labyrinths = Labyrinth.find.all();
         List<LabyrinthCell> labyrinthCells = LabyrinthCell.find.all();
+        List<MapObject> mapObjects = MapObject.find.all();
+        List<Action> actions = Action.find.all();
 
-        return ok(dbviwer.render(users, labyrinths, labyrinthCells));
+
+        return ok(dbviwer.render(users, labyrinths, labyrinthCells, mapObjects, actions));
 
     }
 }
