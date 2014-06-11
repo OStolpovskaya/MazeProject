@@ -1,19 +1,39 @@
-@(users: List[User], labyrinths: List[Labyrinth],labyrinthCells: List[LabyrinthCell])
+@import models.Action
+@(users: List[User], labyrinths: List[Labyrinth],labyrinthCells: List[LabyrinthCell],mapObjects: List[MapObject],actions: List[Action])
+
 
 
 @main(null) {
-<h1>Users(@users.length):</h1>
+<a name="top"></a>
+<a href="#users">Users</a>&nbsp;
+<a href="#labyrinths">Labyrinths</a>&nbsp;
+<a href="#labyrinthCells">Labyrinth cells</a>&nbsp;
+<a href="#mapObjects">MapObjects</a>&nbsp;
+<a href="#actions">Actions</a> &nbsp;
+
+<h1><a name="users"></a>Users(@users.length):<a href="#top">^</a></h1>
 @for(user <- users){
 @user<br>
 }
 
-<h1>Labyrinths(@labyrinths.length):</h1>
+<h1><a name="labyrinths"></a>Labyrinths(@labyrinths.length):<a href="#top">^</a></h1>
 @for(l <- labyrinths){
 @l<br>
 }
 
-<h1>Labyrinth cells(@labyrinthCells.length):</h1>
+<h1><a name="labyrinthCells"></a>Labyrinth cells(@labyrinthCells.length):<a href="#top">^</a></h1>
 @for(cell <- labyrinthCells){
 @cell<br>
 }
+
+<h1><a name="mapObjects"></a>MapObjects(@mapObjects.length):<a href="#top">^</a></h1>
+@for(mapObject <- mapObjects){
+@mapObject<br>
+}
+
+<h1><a name="actions"></a>Actions(@actions.length):<a href="#top">^</a></h1>
+@for(action <- actions){
+@action<br>
+}
+
 }

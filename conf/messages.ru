@@ -73,7 +73,13 @@ mail.reset.confirm.message=Добрый день, <br><br> Ваш пароль �
 
 dashboard.generate.labyrynth=Войти в портал
 labyrynth.exit=Вернуться домой
-labyrynth.goNorth=Идти на север
-labyrynth.goEast=Идти на восток
-labyrynth.goWest=Идти на запад
-labyrynth.goSouth=Идти на юг
+
+ mapObject.NORTH_PASS=Проход на север
+ mapObject.EAST_PASS=Проход на восток
+ mapObject.SOUTH_PASS=Проход на юг
+ mapObject.WEST_PASS=Проход на запад
+
+ action.NORTH_PASS=Пройти на север
+ action.EAST_PASS=Пройти на восток
+ action.SOUTH_PASS=Пройти на юг
+ action.WEST_PASS=Пройти на запад

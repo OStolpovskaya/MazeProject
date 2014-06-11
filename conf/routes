@@ -38,8 +38,5 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /dashboard/enterLabyrinth                  controllers.Dashboard.enterLabyrinth()
 GET     /dashboard/exitLabyrinth                  controllers.Dashboard.exitLabyrinth()
-GET     /dashboard/goNorth                  controllers.Dashboard.goNorth()
-GET     /dashboard/goEast                  controllers.Dashboard.goEast()
-GET     /dashboard/goSouth                  controllers.Dashboard.goSouth()
-GET     /dashboard/goWest                  controllers.Dashboard.goWest()
+GET     /dashboard/executeAction/:id                  controllers.Dashboard.executeAction(id:Long)
 

@@ -37,6 +37,7 @@ public class Labyrinth extends Model {
 
         // generate maze
         new Maze(N, labyrinth);
+        labyrinth.save();
 
         // set current cell
         List<LabyrinthCell> labyrinthCells = labyrinth.cells;
@@ -47,22 +48,31 @@ public class Labyrinth extends Model {
         labyrinth.currentCell = labyrinthCell;
         labyrinth.save();
 
+        // addMapObjects for passes
+        for (LabyrinthCell cell : labyrinthCells) {
+            if (!cell.northWall) {
+                cell.mapObjects.add(MapObject.createNorthPass(cell, LabyrinthCell.findNorthTo(cell).id));
+            }
+            if (!cell.eastWall) {
+                cell.mapObjects.add(MapObject.createEastPass(cell, LabyrinthCell.findEastTo(cell).id));
+            }
+            if (!cell.southWall) {
+                cell.mapObjects.add(MapObject.createSouthPass(cell, LabyrinthCell.findSouthTo(cell).id));
+            }
+            if (!cell.westWall) {
+                cell.mapObjects.add(MapObject.createWestPass(cell,LabyrinthCell.findWestTo(cell).id));
+            }
+            cell.save();
+        }
+
         return labyrinth;
     }
 
     public static void deleteLabyrinth(Labyrinth labyrinth) {
-
-        //Labyrinth labyrinth = Labyrinth.find.byId(labyrinthId);
         labyrinth.currentCell = null;
         labyrinth.save();
-        /*
-        List<LabyrinthCell> labyrinthCells = LabyrinthCell.findByLabyrinth(labyrinth);
-        for (LabyrinthCell labyrinthCell : labyrinthCells) {
-            labyrinthCell.delete();
-        }
-        */
-        labyrinth.delete();
 
+        labyrinth.delete();
     }
 
 
@@ -122,24 +132,14 @@ public class Labyrinth extends Model {
         return stringBuilder.toString();
     }
 
-    public String getActionsInCurrentCell() {
-        StringBuilder stringBuilder = new StringBuilder("<p>Actions:<br>");
-
-        if (!currentCell.northWall) {
-            stringBuilder.append(String.format("<a href=\"%s\">%s</a><br>", routes.Dashboard.goNorth(),
-                    Messages.get("labyrynth.goNorth")));
-        }
-        if (!currentCell.eastWall) {
-            stringBuilder.append(String.format("<a href=\"%s\">%s</a><br>", routes.Dashboard.goEast(),
-                    Messages.get("labyrynth.goEast")));
-        }
-        if (!currentCell.southWall) {
-            stringBuilder.append(String.format("<a href=\"%s\">%s</a><br>", routes.Dashboard.goSouth(),
-                    Messages.get("labyrynth.goSouth")));
-        }
-        if (!currentCell.westWall) {
-            stringBuilder.append(String.format("<a href=\"%s\">%s</a><br>", routes.Dashboard.goWest(),
-                    Messages.get("labyrynth.goWest")));
+    public String getMapObjects() {
+        StringBuilder stringBuilder = new StringBuilder("<h1>MapObjects:</h1>");
+        stringBuilder.append("<p>");
+        for (MapObject mapObject : currentCell.mapObjects) {
+            stringBuilder.append(Messages.get("mapObject." + mapObject.type.toString())).append(": ");
+            stringBuilder.append(String.format("<a href=\"%s\">%s</a><br>", routes.Dashboard.executeAction(mapObject.id),
+                    Messages.get("action." + mapObject.type.toString()))).append("<br>");
+            stringBuilder.append(mapObject).append("<br>");
         }
         stringBuilder.append("</p>");
         return stringBuilder.toString();

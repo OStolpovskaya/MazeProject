@@ -6,25 +6,14 @@ package controllers.utils;
 
 import models.Labyrinth;
 import models.LabyrinthCell;
+import models.MapObject;
+import models.MapObjectType;
 
 import java.util.ArrayList;
 
 /**
- * **********************************************************************
- * Compilation:  javac Maze.java
- * Execution:    java Maze.java N
- * Dependecies:  StdDraw.java
- * <p/>
  * Generates a perfect N-by-N maze using depth-first search with a stack.
- * <p/>
- * % java Maze 62
- * <p/>
- * % java Maze 61
- * <p/>
- * Note: this program generalizes nicely to finding a random tree
- * in a graph.
- * <p/>
- * ***********************************************************************
+ * http://algs4.cs.princeton.edu/41undirected/Maze.java.html
  */
 public class Maze {
     private int N;                 // dimension of maze
@@ -52,19 +41,11 @@ public class Maze {
                 labyrinthCell.eastWall = east[x][y];
                 labyrinthCell.southWall = south[x][y];
                 labyrinthCell.westWall = west[x][y];
+                labyrinthCell.mapObjects = new ArrayList<MapObject>();
                 labyrinth.cells.add(labyrinthCell);
             }
         }
         labyrinth.save();
-    }
-
-    // a test client
-    public static void main(String[] args) {
-        int N = Integer.parseInt(args[0]);
-        Maze maze = new Maze(N, null);
-        StdDraw.show(0);
-        maze.draw();
-        maze.solve();
     }
 
     private void init() {
@@ -134,58 +115,6 @@ public class Maze {
         }
 */
 
-    }
-
-    // solve the maze using depth-first search
-    private void solve(int x, int y) {
-        if (x == 0 || y == 0 || x == N + 1 || y == N + 1) return;
-        if (done || visited[x][y]) return;
-        visited[x][y] = true;
-
-        StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.filledCircle(x + 0.5, y + 0.5, 0.25);
-        StdDraw.show(30);
-
-        // reached middle
-        if (x == N / 2 && y == N / 2) done = true;
-
-        if (!north[x][y]) solve(x, y + 1);
-        if (!east[x][y]) solve(x + 1, y);
-        if (!south[x][y]) solve(x, y - 1);
-        if (!west[x][y]) solve(x - 1, y);
-
-        if (done) return;
-
-        StdDraw.setPenColor(StdDraw.GRAY);
-        StdDraw.filledCircle(x + 0.5, y + 0.5, 0.25);
-        StdDraw.show(30);
-    }
-
-    // solve the maze starting from the start state
-    public void solve() {
-        for (int x = 1; x <= N; x++)
-            for (int y = 1; y <= N; y++)
-                visited[x][y] = false;
-        done = false;
-        solve(1, 1);
-    }
-
-    // draw the maze
-    public void draw() {
-        StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.filledCircle(N / 2 + 0.5, N / 2 + 0.5, 0.375);
-        StdDraw.filledCircle(1.5, 1.5, 0.375);
-
-        StdDraw.setPenColor(StdDraw.BLACK);
-        for (int x = 1; x <= N; x++) {
-            for (int y = 1; y <= N; y++) {
-                if (south[x][y]) StdDraw.line(x, y, x + 1, y);
-                if (north[x][y]) StdDraw.line(x, y + 1, x + 1, y + 1);
-                if (west[x][y]) StdDraw.line(x, y, x, y + 1);
-                if (east[x][y]) StdDraw.line(x + 1, y, x + 1, y + 1);
-            }
-        }
-        StdDraw.show(1000);
     }
 
 }

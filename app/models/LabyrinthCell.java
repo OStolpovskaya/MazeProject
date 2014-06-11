@@ -3,9 +3,7 @@ package models;
 import com.avaje.ebean.Expr;
 import play.db.ebean.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,18 +14,27 @@ import java.util.Map;
 
 @Entity
 public class LabyrinthCell extends Model {
-    public static Model.Finder<Long, LabyrinthCell> find = new Model.Finder<Long, LabyrinthCell>(Long.class, LabyrinthCell.class);
+
     @Id
     public Long id;
+
     public int row;
     public int col;
+
     public boolean northWall;
     public boolean eastWall;
     public boolean southWall;
     public boolean westWall;
+
     public boolean visited = false;
+
     @ManyToOne
     public Labyrinth labyrinth;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "labyrinthCell")
+    public List<MapObject> mapObjects;
+
+    public static Model.Finder<Long, LabyrinthCell> find = new Model.Finder<Long, LabyrinthCell>(Long.class, LabyrinthCell.class);
 
     public static List<LabyrinthCell> findByLabyrinth(Labyrinth labyrinth) {
         List<LabyrinthCell> labyrinthCells = find.where(Expr.eq("labyrinth", labyrinth)).findList();
@@ -57,5 +64,21 @@ public class LabyrinthCell extends Model {
                 ", visited=" + visited +
                 ", labyrinth=" + labyrinth.id +
                 '}';
+    }
+
+    public static LabyrinthCell findNorthTo(LabyrinthCell cell) {
+        return findByLabyrinthAndCoordinates(cell.labyrinth,cell.row-1, cell.col);
+    }
+
+    public static LabyrinthCell findSouthTo(LabyrinthCell cell) {
+        return findByLabyrinthAndCoordinates(cell.labyrinth,cell.row+1, cell.col);
+    }
+
+    public static LabyrinthCell findEastTo(LabyrinthCell cell) {
+        return findByLabyrinthAndCoordinates(cell.labyrinth,cell.row, cell.col+1);
+    }
+
+    public static LabyrinthCell findWestTo(LabyrinthCell cell) {
+        return findByLabyrinthAndCoordinates(cell.labyrinth,cell.row, cell.col-1);
     }
 }
