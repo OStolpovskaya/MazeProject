@@ -4,14 +4,14 @@ import org.junit.Test;
 import play.test.FakeApplication;
 import play.test.Helpers;
 
-import java.util.ArrayList;
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Created by OM on 11.06.2014.
  */
 public class LabyrinthTest {
     @Test
-    public void testCreateLabyrinth() throws Exception {
+    public void testUserEnterLabyrinth() throws Exception {
         FakeApplication app = Helpers.fakeApplication();
         Helpers.start(app);
 
@@ -19,26 +19,31 @@ public class LabyrinthTest {
 
         Labyrinth.createLabyrinth();
 
+        assertThat(Labyrinth.find.all().size()).isEqualTo(1);
+        assertThat(LabyrinthCell.find.all().size()).isEqualTo(Labyrinth.N*Labyrinth.N);
+
         user.enterLabyrinth(Labyrinth.find.byId(1L));
-        System.out.println("Cell " + user.labyrinth.cells.get(0));
+        assertThat(user.labyrinth).isEqualTo(Labyrinth.find.byId(1L));
 
-        System.out.println("AFTER CREATE");
-        System.out.println(User.find.all());
-        System.out.println();
-        System.out.println(Labyrinth.find.all());
-        System.out.println();
-        System.out.println(LabyrinthCell.find.all());
-        System.out.println();
+        Helpers.stop(app);
+    }
 
-        Labyrinth labyrinth = user.labyrinth;
+    @Test
+    public void testUserExitLabyrinth() throws Exception {
+        FakeApplication app = Helpers.fakeApplication();
+        Helpers.start(app);
+
+        User user = User.find.byId(1L);
+
+        Labyrinth.createLabyrinth();
+        user.enterLabyrinth(Labyrinth.find.byId(1L));
         user.exitLabyrinth();
-        Labyrinth.deleteLabyrinth(labyrinth);
+        assertThat(user.labyrinth).isEqualTo(null);
 
-        System.out.println("AFTER DELETE");
-        System.out.println(Labyrinth.find.all());
-        System.out.println();
-        System.out.println(LabyrinthCell.find.all());
-        System.out.println();
+        Labyrinth.deleteLabyrinth(Labyrinth.find.byId(1L));
+        assertThat(Labyrinth.find.all().size()).isEqualTo(0);
+        assertThat(LabyrinthCell.find.all().size()).isEqualTo(0);
+
         Helpers.stop(app);
     }
 }
