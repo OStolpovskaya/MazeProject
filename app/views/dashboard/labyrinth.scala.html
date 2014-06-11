@@ -1,0 +1,23 @@
+@(user: User)
+
+@main(user) {
+@wflash()
+<div class="col-lg-6">
+    LABYRINTH Example<br>
+    @user.toString()<br>
+    @user.labyrinth.toString()<br>
+    @Html(user.labyrinth.getActionsInCurrentCell)
+</div>
+
+<div class="col-lg-6">
+    <div class="well">
+        <h1>@user.labyrinth.title</h1>
+        @Html(user.labyrinth.getMap)
+        <a href="@routes.Dashboard.exitLabyrinth">@Messages("labyrynth.exit")</a>
+    </div>
+
+    <div class="well">
+        storage
+    </div>
+</div>
+}

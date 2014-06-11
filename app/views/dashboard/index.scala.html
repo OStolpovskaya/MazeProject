@@ -1,0 +1,21 @@
+@(user: User)
+
+@main(user) {
+
+@wflash()
+<div class="col-lg-6">
+    DASHBOARD Example<br>
+    @user.toString()<br>
+</div>
+
+<div class="col-lg-6">
+    <div class="well">
+
+        <a href="@controllers.routes.Dashboard.enterLabyrinth">@Messages("dashboard.generate.labyrynth")</a>
+    </div>
+
+    <div class="well">
+        storage
+    </div>
+</div>
+}

@@ -1,0 +1,19 @@
+@(users: List[User], labyrinths: List[Labyrinth],labyrinthCells: List[LabyrinthCell])
+
+
+@main(null) {
+<h1>Users(@users.length):</h1>
+@for(user <- users){
+@user<br>
+}
+
+<h1>Labyrinths(@labyrinths.length):</h1>
+@for(l <- labyrinths){
+@l<br>
+}
+
+<h1>Labyrinth cells(@labyrinthCells.length):</h1>
+@for(cell <- labyrinthCells){
+@cell<br>
+}
+}

@@ -1,6 +1,6 @@
-# PlayStartApp
+# MazeProject
 
-This is a sample application using Play Framework (See tags https://github.com/yesnault/PlayStartApp/tags for download)
+This is a sample application using Play Framework
 
 ## Features
 * Sign Up
@@ -32,9 +32,6 @@ This is a sample application using Play Framework (See tags https://github.com/y
 ## Documentation
 * Failing with Passwords (a presentation on issues in user authentication) : http://tersesystems.com/2012/02/17/failing-with-passwords
 * Everything you ever wanted to know about secure password reset : http://www.troyhunt.com/2012/05/everything-you-ever-wanted-to-know.html
-
-## Promotion
-* You can vote for this application on http://www.playmodules.net/demo/14
 
 ## Licence
 * BSD. See LICENSE file
