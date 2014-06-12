@@ -3,6 +3,7 @@ package models;
 import controllers.routes;
 import models.utils.AppException;
 import models.utils.Hash;
+import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -52,6 +53,9 @@ public class User extends Model {
     @Formats.NonEmpty
     private int thirst;
 
+    private int time;
+
+    public static int MAX_THIRST = 720;
     public static Model.Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);
 
     /**
@@ -124,25 +128,50 @@ public class User extends Model {
 
     public void applyNewPlayerSettings() {
         world = null;
-        thirst = 100;
+        thirst = MAX_THIRST;
         save();
     }
 
-    public int getThirst() {
-        return thirst;
+    public void updateTime(int addedTime) {
+        time = time + addedTime;
+        thirst = thirst - addedTime;
+        if (thirst <= 0) {
+            die();
+            return;
+        }
+        save();
     }
 
-    public void setThirst(int thirst) {
-        if (thirst > 100)
-            thirst = 100;
-        this.thirst = thirst;
+    private void die() {
+        Logger.debug(String.format("User %s dies", fullname));
+        World curWorld = world;
+        exitWorld();
+        World.deleteWorld(curWorld);
     }
+
+    public String getFormattedTime() {
+        int hour = time / 60;
+        int minutes = time % 60;
+        return String.format("%d:%d", hour, minutes);
+    }
+
+    public String getFormattedThirst() {
+        String formattedThirst;
+        if (thirst<=60){
+            formattedThirst=String.format("<span style=\"color:red\">%.2f%%</span>",(float)thirst/MAX_THIRST*100);
+        }else{
+            formattedThirst=String.format("<span style=\"color:blue\">%.2f%%</span>",(float)thirst/MAX_THIRST*100);
+        }
+        return formattedThirst;
+    }
+
 
     @Override
     public String toString() {
         return "User{" +
                 "fullname='" + fullname + '\'' +
                 ", thirst=" + thirst +
+                ", time=" + time +
                 ", world=" + (world == null ? "null" : world.id) +
                 '}';
     }
@@ -159,6 +188,8 @@ public class User extends Model {
 
     public void exitWorld() {
         world = null;
+        thirst = MAX_THIRST;
+        time = 0;
         save();
     }
 
@@ -168,4 +199,6 @@ public class User extends Model {
         }
         return true;
     }
+
+
 }

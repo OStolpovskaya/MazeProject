@@ -20,13 +20,13 @@ public class Action extends Model {
     @Enumerated(EnumType.STRING)
     public MapObjectType type;
 
-    public long time;
+    public int time;
 
     private final String methodName;
 
     public static Model.Finder<Long, Action> find = new Model.Finder<Long, Action>(Long.class, Action.class);
 
-    public Action(MapObjectType type, long time, String methodName) {
+    public Action(MapObjectType type, int time, String methodName) {
 
         this.type = type;
         this.time = time;
@@ -53,6 +53,9 @@ public class Action extends Model {
         try {
             method = this.getClass().getMethod(methodName, User.class, MapObject.class);
             method.invoke(this, user, mapObject);
+
+            user.updateTime(time);
+
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {

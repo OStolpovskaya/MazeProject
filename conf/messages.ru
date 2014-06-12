@@ -91,3 +91,6 @@ labyrynth.exit=Вернуться домой
  action.CAVE_EXIT=Выйти из пещеры
  action.HOUSE_ENTRANCE=Войти в дом
  action.HOUSE_EXIT=Выйти из дома
+
+ user.timeInLabyrinth=Время в лабиринте
+ user.thirst=Жажда

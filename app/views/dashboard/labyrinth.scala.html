@@ -6,7 +6,9 @@
     LABYRINTH Example<br>
     @user.toString()<br>
     @user.world.toString()<br>
-    @user.world.currentCell.labyrinth.toString()<br>
+    @user.world.currentCell.labyrinth.toString()<br><br>
+    @Messages("user.timeInLabyrinth"): @user.getFormattedTime<br>
+    @Messages("user.thirst"):@Html(user.getFormattedThirst)<br>
     @Html(user.world.getMapObjectsOnCurrentCell)
 </div>
 
