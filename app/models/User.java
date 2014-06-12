@@ -47,7 +47,7 @@ public class User extends Model {
 
     @OneToOne
     @MapsId
-    public Labyrinth labyrinth;
+    public World world;
 
     @Formats.NonEmpty
     private int thirst;
@@ -123,7 +123,7 @@ public class User extends Model {
     }
 
     public void applyNewPlayerSettings() {
-        labyrinth = null;
+        world = null;
         thirst = 100;
         save();
     }
@@ -143,7 +143,7 @@ public class User extends Model {
         return "User{" +
                 "fullname='" + fullname + '\'' +
                 ", thirst=" + thirst +
-                ", labyrinth=" + (labyrinth == null ? "null" : labyrinth.id) +
+                ", world=" + (world == null ? "null" : world.id) +
                 '}';
     }
 
@@ -152,18 +152,18 @@ public class User extends Model {
         this.save();
     }
 
-    public void enterLabyrinth(Labyrinth labyrinth) {
-        this.labyrinth = labyrinth;
+    public void enterWorld(World world) {
+        this.world = world;
         save();
     }
 
-    public void exitLabyrinth() {
-        labyrinth = null;
+    public void exitWorld() {
+        world = null;
         save();
     }
 
-    public boolean inLabyrinth() {
-        if (labyrinth == null) {
+    public boolean inWorld() {
+        if (world == null) {
             return false;
         }
         return true;

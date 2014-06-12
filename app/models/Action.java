@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import play.Logger;
-import scala.util.parsing.combinator.testing.Str;
 
 /**
  * Created by OM on 12.06.2014.
@@ -71,8 +70,7 @@ public class Action extends Model {
         newCurrentCell.visited = true;
         newCurrentCell.save();
 
-        Labyrinth labyrinth = user.labyrinth;
-        labyrinth.currentCell = newCurrentCell;
-        labyrinth.save();
+        user.world.currentCell = newCurrentCell;
+        user.world.save();
     }
 }

@@ -21,35 +21,29 @@ public class Labyrinth extends Model {
 
     public String title;
 
-    @OneToOne
-    public LabyrinthCell currentCell;
+    public int size;
+
+    @ManyToOne
+    public World world;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "labyrinth")
     public List<LabyrinthCell> cells;
 
-    public static final int N = 10;
     public static Model.Finder<Long, Labyrinth> find = new Model.Finder<Long, Labyrinth>(Long.class, Labyrinth.class);
 
-    public static Labyrinth createLabyrinth() {
+    public static Labyrinth createLabyrinth(World world, String title, int size) {
         Labyrinth labyrinth = new Labyrinth();
-        labyrinth.title = "Test labyrinth";
+        labyrinth.title = title;
+        labyrinth.world = world;
+        labyrinth.size = size;
         labyrinth.save();
 
         // generate maze
-        new Maze(N, labyrinth);
-        labyrinth.save();
-
-        // set current cell
-        List<LabyrinthCell> labyrinthCells = labyrinth.cells;
-        LabyrinthCell labyrinthCell = labyrinthCells.get(new Random().nextInt(labyrinthCells.size()));
-        labyrinthCell.visited = true;
-        labyrinthCell.save();
-
-        labyrinth.currentCell = labyrinthCell;
+        new Maze(size, labyrinth);
         labyrinth.save();
 
         // addMapObjects for passes
-        for (LabyrinthCell cell : labyrinthCells) {
+        for (LabyrinthCell cell : labyrinth.cells) {
             if (!cell.northWall) {
                 cell.mapObjects.add(MapObject.createNorthPass(cell, LabyrinthCell.findNorthTo(cell).id));
             }
@@ -69,9 +63,6 @@ public class Labyrinth extends Model {
     }
 
     public static void deleteLabyrinth(Labyrinth labyrinth) {
-        labyrinth.currentCell = null;
-        labyrinth.save();
-
         labyrinth.delete();
     }
 
@@ -81,7 +72,6 @@ public class Labyrinth extends Model {
         return "Labyrinth{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", currentCell=" + (currentCell == null ? "no" : currentCell.id) +
                 ", cells=" + cells.size() +
                 '}';
     }
@@ -91,9 +81,9 @@ public class Labyrinth extends Model {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<div class=\"table\">");
 
-        for (int row = 0; row < N; row++) {
+        for (int row = 0; row < size; row++) {
             stringBuilder.append("<div class=\"row\">");
-            for (int col = 0; col < N; col++) {
+            for (int col = 0; col < size; col++) {
                 LabyrinthCell labyrinthCell = LabyrinthCell.findByLabyrinthAndCoordinates(this, row, col);
                 if (labyrinthCell == null) {
                     Logger.error("Cell with labyrinth=" + this.id + ", row=" + row + ", col=" + col + " not found");
@@ -101,10 +91,11 @@ public class Labyrinth extends Model {
                 }
 
                 stringBuilder.append("<div class=\"cell\" style=\"");
-                if (labyrinthCell.visited == false) {
+                //if (labyrinthCell.visited == false) {     // TODO: uncomment this
+                if (1==0) {
                     stringBuilder.append("background-color:#CCCCCC;");
                 } else {
-                    if (labyrinthCell.equals(currentCell)) {
+                    if (labyrinthCell.equals(world.currentCell)) {
                         stringBuilder.append("background-color:#57DE91;");
                     }
                     if (labyrinthCell.northWall) {
@@ -132,16 +123,8 @@ public class Labyrinth extends Model {
         return stringBuilder.toString();
     }
 
-    public String getMapObjects() {
-        StringBuilder stringBuilder = new StringBuilder("<h1>MapObjects:</h1>");
-        stringBuilder.append("<p>");
-        for (MapObject mapObject : currentCell.mapObjects) {
-            stringBuilder.append(Messages.get("mapObject." + mapObject.type.toString())).append(": ");
-            stringBuilder.append(String.format("<a href=\"%s\">%s</a><br>", routes.Dashboard.executeAction(mapObject.id),
-                    Messages.get("action." + mapObject.type.toString()))).append("<br>");
-            stringBuilder.append(mapObject).append("<br>");
-        }
-        stringBuilder.append("</p>");
-        return stringBuilder.toString();
+
+    public LabyrinthCell getRandomCell() {
+        return cells.get(new Random().nextInt(cells.size()));
     }
 }

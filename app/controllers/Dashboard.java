@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -19,39 +20,40 @@ public class Dashboard extends Controller {
 
     public static Result index() {
         User user = User.findByEmail(request().username());
-        if (user.inLabyrinth()) {
+        if (user.inWorld()) {
             return ok(labyrinth.render(user));
         } else {
             return ok(index.render(user));
         }
     }
 
-    public static Result enterLabyrinth() {
+    public static Result enterWorld() {
         User user = User.findByEmail(request().username());
-        if (!user.inLabyrinth()) {
-            Labyrinth labyrinth = Labyrinth.createLabyrinth();
-            user.enterLabyrinth(labyrinth);
+        if (!user.inWorld()) {
+            Logger.debug(String.format("User %s goes to world", user.fullname));
+            World world = World.createWorld();
+            user.enterWorld(world);
         }
         return GO_HOME;
     }
 
-    public static Result exitLabyrinth() {
+    public static Result exitWorld() {
         User user = User.findByEmail(request().username());
-        if (user.inLabyrinth()) {
-            Labyrinth labyrinth = user.labyrinth;
-            user.exitLabyrinth();
-            Labyrinth.deleteLabyrinth(labyrinth);
+        if (user.inWorld()) {
+            Logger.debug(String.format("User %s goes home", user.fullname));
+            World world = user.world;
+            user.exitWorld();
+            World.deleteWorld(world);
         }
         return GO_HOME;
     }
 
     public static Result executeAction(long id){
         User user = User.findByEmail(request().username());
-        if (user.inLabyrinth()) {
-            Labyrinth labyrinth = user.labyrinth;
+        if (user.inWorld()) {
             MapObject mapObject = MapObject.find.byId(id);
             // check if this mapObject really belongs to user position (currentCell)
-            if (labyrinth.currentCell.equals(mapObject.labyrinthCell)){
+            if (user.world.currentCell.equals(mapObject.labyrinthCell)){
                 Action action = Action.findByMapObjectType(mapObject.type);
                 action.execute(user, mapObject);
             }

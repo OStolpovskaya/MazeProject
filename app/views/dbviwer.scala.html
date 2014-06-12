@@ -6,6 +6,7 @@
 @main(null) {
 <a name="top"></a>
 <a href="#users">Users</a>&nbsp;
+<a href="#worlds">Worlds</a>&nbsp;
 <a href="#labyrinths">Labyrinths</a>&nbsp;
 <a href="#labyrinthCells">Labyrinth cells</a>&nbsp;
 <a href="#mapObjects">MapObjects</a>&nbsp;
@@ -18,6 +19,11 @@
 
 <h1><a name="labyrinths"></a>Labyrinths(@labyrinths.length):<a href="#top">^</a></h1>
 @for(l <- labyrinths){
+@l<br>
+}
+
+<h1><a name="worlds"></a>Worlds(@World.find.all().length):<a href="#top">^</a></h1>
+@for(l <- World.find.all()){
 @l<br>
 }
 

@@ -5,15 +5,16 @@
 <div class="col-lg-6">
     LABYRINTH Example<br>
     @user.toString()<br>
-    @user.labyrinth.toString()<br>
-    @Html(user.labyrinth.getMapObjects)
+    @user.world.toString()<br>
+    @user.world.currentCell.labyrinth.toString()<br>
+    @Html(user.world.getMapObjectsOnCurrentCell)
 </div>
 
 <div class="col-lg-6">
     <div class="well">
-        <h1>@user.labyrinth.title</h1>
-        @Html(user.labyrinth.getMap)
-        <a href="@routes.Dashboard.exitLabyrinth">@Messages("labyrynth.exit")</a>
+        <h1>@user.world.currentCell.labyrinth.title</h1>
+        @Html(user.world.currentCell.labyrinth.getMap)
+        <a href="@routes.Dashboard.exitWorld">@Messages("labyrynth.exit")</a>
     </div>
 
     <div class="well">

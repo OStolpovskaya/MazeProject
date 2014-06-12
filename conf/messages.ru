@@ -78,8 +78,16 @@ labyrynth.exit=Вернуться домой
  mapObject.EAST_PASS=Проход на восток
  mapObject.SOUTH_PASS=Проход на юг
  mapObject.WEST_PASS=Проход на запад
+ mapObject.CAVE_ENTRANCE=Вход в пещеру
+ mapObject.CAVE_EXIT=Выход из пещеры
+ mapObject.HOUSE_ENTRANCE=Вход в дом
+ mapObject.HOUSE_EXIT=Выход из дома
 
  action.NORTH_PASS=Пройти на север
  action.EAST_PASS=Пройти на восток
  action.SOUTH_PASS=Пройти на юг
  action.WEST_PASS=Пройти на запад
+ action.CAVE_ENTRANCE=Войти в пещеру
+ action.CAVE_EXIT=Выйти из пещеры
+ action.HOUSE_ENTRANCE=Войти в дом
+ action.HOUSE_EXIT=Выйти из дома
